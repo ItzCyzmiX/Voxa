@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get install -y xvfb
+
 # Set environment variables
 ENV MOZ_HEADLESS=1
 ENV PATH="/usr/local/bin/geckodriver:${PATH}"

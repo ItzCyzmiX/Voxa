@@ -15,6 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
+from pyvirtualdisplay import Display
 
 # Configure logging
 logging.basicConfig(
@@ -75,6 +76,8 @@ class FirefoxDriverSetup:
     @staticmethod
     def create_driver() -> webdriver.Firefox:
         """Create and configure Firefox WebDriver"""
+        display = Display(visible=0, size=(800, 600))  # Virtual display (headless)
+        display.start()
         options = Options()
         # Configure audio settings
         options.add_argument("--headless")  # Run in headless mode
@@ -86,8 +89,12 @@ class FirefoxDriverSetup:
         options.set_preference("media.autoplay.default", 0)
         options.set_preference("media.autoplay.blocking_policy", 0)
         
+        driver = webdriver.Firefox(options=options, service=FirefoxService(GeckoDriverManager().install()))
+        driver.set_page_load_timeout(30)  # Increase page load timeout
+        driver.set_script_timeout(30)     # Increase script timeout 
+        
         logger.info("Initializing Firefox Driver")
-        return webdriver.Firefox(options=options, service=FirefoxService(GeckoDriverManager().install()))
+        return driver
 
 class JammableAutomation:
     """Main automation class for Jammable website"""
