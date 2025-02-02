@@ -38,7 +38,7 @@ RUN CHROME_VERSION=$(google-chrome-stable --version | sed 's/Google Chrome //') 
 ENV PATH="/usr/local/bin/chromedriver:${PATH}"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 ENV CHROME_BIN="/usr/bin/google-chrome-stable"
-ENV DISPLAY=:99  # Set display variable for Xvfb
+ENV DISPLAY=:99 
 
 # Install Python dependencies
 WORKDIR /app/src
