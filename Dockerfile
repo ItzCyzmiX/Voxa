@@ -20,7 +20,7 @@ ENV MOZ_HEADLESS=1
 ENV PATH="/usr/local/bin/geckodriver:${PATH}"
 
 # Set working directory
-WORKDIR /app
+WORKDIR /app/src
 COPY . /app
 
 # Install Python dependencies
