@@ -7,10 +7,13 @@ RUN apt-get update && apt-get install -y \
     unzip \
     firefox-esr \
     xvfb \
-    && wget -q "https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-linux64.tar.gz" \
-    && tar -xvzf geckodriver-linux64.tar.gz \
+    libgtk-3-0 \
+    && wget -q --tries=3 --retry-connrefused "https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-linux64.tar.gz" \
+    && tar -xvzf geckodriver-v0.32.0-linux64.tar.gz \
     && mv geckodriver /usr/local/bin/ \
-    && chmod +x /usr/local/bin/geckodriver
+    && chmod +x /usr/local/bin/geckodriver \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV MOZ_HEADLESS=1
