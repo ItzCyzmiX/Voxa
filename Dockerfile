@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     libgtk-3-0 \
     libx11-xcb1 \
+    xvfb \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
