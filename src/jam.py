@@ -9,12 +9,12 @@ import mailslurp_client
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from pyvirtualdisplay import Display
 
 # Configure logging
@@ -80,16 +80,23 @@ class FirefoxDriverSetup:
         display.start()
         options = Options()
         # Configure audio settings
-        options.add_argument("--headless")  # Run in headless mode
-        options.add_argument("--no-sandbox")  # Required for Railway
-        options.add_argument("--disable-dev-shm-usage")  # Prevents crashes
-  
-        options.set_preference("media.navigator.permission.disabled", True)
-        options.set_preference("media.navigator.streams.fake", True)
-        options.set_preference("media.autoplay.default", 0)
-        options.set_preference("media.autoplay.blocking_policy", 0)
+        # Headless mode for Chrome
+        options.add_argument("--headless")
+
+        # Disable sandbox (required in some environments)
+        options.add_argument("--no-sandbox")
+
+        # Disable /dev/shm usage (prevents crashes in some environments)
+        options.add_argument("--disable-dev-shm-usage")
+
+        # Fake media streams (similar to Firefox preferences)
+        options.add_argument("--use-fake-ui-for-media-stream")  # Automatically grant media permissions
+        options.add_argument("--use-fake-device-for-media-stream")  # Use fake devices (camera/mic)
+
+        # Disable autoplay for media (similar to Firefox preferences)
+        options.add_argument("--autoplay-policy=no-user-gesture-required")
         
-        driver = webdriver.Firefox(options=options, service=FirefoxService(GeckoDriverManager().install()))
+        driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install()))
         driver.set_page_load_timeout(30)  # Increase page load timeout
         driver.set_script_timeout(30)     # Increase script timeout 
         
