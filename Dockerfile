@@ -20,6 +20,11 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Google Chrome
+RUN wget -q "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
+    && dpkg -i google-chrome-stable_current_amd64.deb \
+    && apt-get -fy install \
+    && rm google-chrome-stable_current_amd64.deb
 
 # Set environment variables
 ENV PATH="/usr/local/bin/chromedriver:${PATH}"
